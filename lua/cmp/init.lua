@@ -127,6 +127,19 @@ cmp.abort = cmp.sync(function()
   end
 end)
 
+---Select current item if possible
+cmp.select_current_item = cmp.sync(function(option)
+  option = option or {}
+
+  if cmp.core.view:visible() then
+    local release = cmp.core:suspend()
+    cmp.core.view:select_current_item(option)
+    vim.schedule(release)
+    return true
+  end
+  return false
+end)
+
 ---Select next item if possible
 cmp.select_next_item = cmp.sync(function(option)
   option = option or {}

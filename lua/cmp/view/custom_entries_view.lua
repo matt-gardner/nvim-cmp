@@ -282,6 +282,18 @@ custom_entries_view.info = function(self)
   return self.entries_win:info()
 end
 
+custom_entries_view.select_current_item = function(self, option)
+  if self:visible() then
+    local cursor = vim.api.nvim_win_get_cursor(self.entries_win.win)[1]
+    if not self.entries_win:option('cursorline') then
+      cursor = (self:is_direction_top_down() and 1) or #self.entries
+    elseif #self.entries < cursor then
+      cursor = (not self:is_direction_top_down() and #self.entries + 1) or 0
+    end
+    self:_select(cursor, option)
+  end
+end
+
 custom_entries_view.select_next_item = function(self, option)
   if self:visible() then
     local cursor = vim.api.nvim_win_get_cursor(self.entries_win.win)[1]
